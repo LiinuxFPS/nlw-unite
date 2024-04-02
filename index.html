@@ -6,6 +6,22 @@
 <script>dayjs.locale('pt-br')</script>
 
 <script>dayjs().format()</script>
+
+<form onsubmit="adicionarParticipante(event)">
+    <fieldset>
+        <legend>Inscrição</legend>
+
+        <div>
+            <input type="text" placeholder="nome completo" name="nome" required>
+        </div>
+
+        <input type="email" placeholder="Email" name="email" required>
+
+        <button>
+            Realizar Inscrição
+        </button>
+    </fieldset>
+</form>
 <table width="100%">
     <thead style="text-align: left;">
         <tr>
