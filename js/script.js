@@ -72,7 +72,20 @@ const participante={
 const criarNovoParticipante=(participante)=>{
 
   const dataInscricao=dayjs(Date.now()).to(participante.dataInscricao)
-  const dataCheckIn=dayjs(Date.now()).to(participante.dataCheckIn)
+  let dataCheckIn=dayjs(Date.now()).to(participante.dataCheckIn)
+  
+  //BOTÃO CHECK-IN
+  if(participante.dataCheckIn == null){
+    dataCheckIn = `
+      <button 
+        data-email="${participante.email}"
+        onclick="fazerCheckIn(event)"
+        >
+        Confirmar check-in
+      </button>
+    `
+  }
+
   return `
   <tr>
       <td>
@@ -119,8 +132,42 @@ const adicionarParticipante=(event)=>{
       dataCheckIn: null
   }
 
+  //verificar se o participante ja existe
+  const participanteExiste=participantes.find(
+    (p)=>{
+    return p.email == participante.email
+    }
+  )
+  if(participanteExiste){
+    alert('Email já cadastrado!')
+    return
+  }
   //inserir na lista 'participantes'
   // OS '...' mantem os dados do array participantes ja existentes
   participantes = [participante, ...participantes]
+  atualizarLista(participantes)
+
+  //limpar o formulario
+  event.target.querySelector('[name="nome"]').value=""
+  event.target.querySelector('[name="email"]').value=" "
+}
+
+const fazerCheckIn=(event)=>{
+
+  //confirmar o check-in
+  const mensagemConfirmacao= 'Tem certeza que deseja fazer o check-in ??'
+
+  if(confirm(mensagemConfirmacao)==false){
+    return
+  }
+  // encontrar o participante dentro da lista
+  const participante = participantes.find((p)=>{
+    return p.email == event.target.dataset.email 
+  })
+
+  // atualizar o check-in do participante
+  participante.dataCheckIn = new Date()
+
+  // atualizar a lista de participantes
   atualizarLista(participantes)
 }
